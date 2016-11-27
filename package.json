@@ -11,5 +11,9 @@
   "dependencies": {
     "express": "^4.14.0",
     "mongodb": "^2.2.11"
+  },
+"repository" :
+  { "type" : "git"
+  , "url" : "https://github.com/eqmvii/firstapp"
   }
 }
