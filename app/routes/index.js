@@ -11,6 +11,7 @@ module.exports = function (app, db) {
             res.sendFile(process.cwd() + '/public/index.html');
         });
 
+//routes for the get/post/delete used by the client JS for the API
     app.route('/api/clicks')
         .get(clickHandler.getClicks)
         .post(clickHandler.addClick)
