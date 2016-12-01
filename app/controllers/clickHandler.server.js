@@ -1,68 +1,91 @@
 'use strict';
 
-function clickHandler (db) {
+var Users = require('../models/users.js');
 
-    var clicks = db.collection('clicks');
+function ClickHandler () {
 
     this.getClicks = function (req, res) {
+        Users
+            .findOne({ 'github.id': req.user.github.id }, { '_id': false })
+            .exec(function (err, result) {
+                if (err) { throw err; }
 
-  var clickProjection = { '_id': false };
+                res.json(result.nbrClicks);
+            });
+    };
 
-  clicks.findOne({}, clickProjection, function (err, result) {
-     if (err) {
-        throw err;
-     }
+    this.addClick = function (req, res) {
+        Users
+            .findOneAndUpdate({ 'github.id': req.user.github.id }, { $inc: { 'nbrClicks.clicks': 1 } })
+            .exec(function (err, result) {
+                    if (err) { throw err; }
 
-     if (result) {
-        res.json(result);
-     } else {
-        clicks.insert({ 'clicks': 0 }, function (err) {
-           if (err) {
-              throw err;
-           }
+                    res.json(result.nbrClicks);
+                }
+            );
+    };
 
-           clicks.findOne({}, clickProjection, function (err, doc) {
-              if (err) {
-                 throw err;
-              }
+    this.resetClicks = function (req, res) {
+        Users
+            .findOneAndUpdate({ 'github.id': req.user.github.id }, { 'nbrClicks.clicks': 0 })
+            .exec(function (err, result) {
+                    if (err) { throw err; }
 
-              res.json(doc);
-           });
-        });
-     }
-  });
-}; //close getClicks
+                    res.json(result.nbrClicks);
+                }
+            );
+    };
+
+}
+
+
+/*function clickHandler () {
+
+this.getClicks = function (req, res) {
+    Users
+        .findOne({}, { '_id': false })
+        .exec(function (err, result) {
+                if (err) { throw err; }
+
+                if (result) {
+                    res.json(result);
+                } else {
+                    var newDoc = new Clicks({ 'clicks': 0 });
+                    newDoc.save(function (err, doc) {
+                        if (err) { throw err; }
+
+                        res.json(doc);
+                    });
+
+                }
+            });
+};
+
 
 this.addClick = function (req, res) {
-    clicks
-        .findAndModify(
-            {},
-            { '_id': 1 },
-            { $inc: { 'clicks': 1 } },
-            function (err, result) {
+    Clicks
+        .findOneAndUpdate({}, { $inc: { 'clicks': 1 } })
+        .exec(function (err, result) {
                 if (err) { throw err; }
 
                 res.json(result);
             }
         );
-}; //close addClick
+};
+
 
 this.resetClicks = function (req, res) {
-    clicks
-        .update(
-            {},
-            { 'clicks': 0 },
-            function (err, result) {
+    Clicks
+        .findOneAndUpdate({}, { 'clicks': 0 })
+        .exec(function (err, result) {
                 if (err) { throw err; }
 
                 res.json(result);
             }
         );
-}; //close resetClicks
+};
 
+} // close clickHandler*/
 
-
-} // close clickHandler
-
-module.exports = clickHandler; //export clickHandler
+module.exports = ClickHandler; //export clickHandler
 
