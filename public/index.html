@@ -1,10 +1,12 @@
 <!DOCTYPE HTML>
-<html>
+<html ng-app="clementineApp"> <!--Angular tag-->
+
 	<head>
 		<title>Clementine.js - full-stack boilerplate</title>
 		<link href="http://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet" type="text/css">
     		<link href="/public/css/main.css" rel="stylesheet" type="text/css">
 	</head>
+
 	<body>
 	<div class="container">
          <img src="/public/img/clementine_150.png" />
@@ -12,14 +14,18 @@
          <p class="clementine-text">Clementine.js</p>
       </div>
 
-      <div class="container">
-         <p>You have clicked the button <span id="click-nbr"></span> times.</p>
+      <div class="container" ng-controller="clickController">
+         <p>You have clicked the button <span ng-cloak>{{ clicks }}</span> times.</p>
          <br />
          <div class="btn-container">
-            <button type="submit" class="btn btn-add">INCREASE COUNT</button>
-            <button class="btn btn-delete">RESET COUNT</button>
+            <button type="submit" class="btn btn-add" ng-click="addClick()">INCREASE COUNT</button>
+            <button class="btn btn-delete" ng-click="resetClicks()">RESET COUNT</button>
          </div>
       </div>
+
+<script type ="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.9/angular.min.js"></script>
+
+<script type ="text/javascript" src="https://code.angularjs.org/1.5.9/angular-resource.min.js"></script>
 
  <script type="text/javascript" src="/controllers/clickController.client.js"></script>
 

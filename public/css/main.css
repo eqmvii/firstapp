@@ -64,3 +64,8 @@ img {
     color: #212121;
 }
 
+[ng-cloak] {
+  display: none !important;
+}
+
+
